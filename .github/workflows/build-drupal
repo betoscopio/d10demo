@@ -1,3 +1,5 @@
+name: Drupal build
+
 on:
   push:
     branches: [ master ]
@@ -32,3 +34,17 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
+    
+    - name: Install Node.js and NPM
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Change to the theme directory
+      run: cd web/themes/custom/meta3pl
+
+    - name: Install NPM Dependencies
+      run: npm install
+
+    - name: Build NPM Assets
+      run: npm run production
